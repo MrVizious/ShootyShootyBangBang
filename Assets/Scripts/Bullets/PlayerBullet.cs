@@ -20,12 +20,14 @@ public class PlayerBullet : MonoBehaviour
     private Camera cam;
     private Rigidbody2D rb;
     private Collider2D col;
+    private TrailRenderer trail;
 
     private void OnEnable()
     {
         cam = Camera.main;
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
+        trail = GetComponent<TrailRenderer>();
         col.isTrigger = true;
     }
     private void Start()
@@ -68,10 +70,12 @@ public class PlayerBullet : MonoBehaviour
         if (screenPosition.x > Screen.width || screenPosition.x < 0)
         {
             transform.position = cam.ScreenToWorldPoint(new Vector2(screenPosition.x > Screen.width ? 0 : Screen.width, screenPosition.y));
+            trail.Clear();
         }
         if (screenPosition.y > Screen.height || screenPosition.y < 0)
         {
             transform.position = cam.ScreenToWorldPoint(new Vector2(screenPosition.x, screenPosition.y > Screen.height ? 0 : Screen.height));
+            trail.Clear();
         }
         transform.position = new Vector3(transform.position.x, transform.position.y, 0);
     }
