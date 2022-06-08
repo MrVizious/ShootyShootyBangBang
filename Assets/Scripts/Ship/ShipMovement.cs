@@ -9,6 +9,7 @@ public class ShipMovement : MonoBehaviour
     public float maxSpeed = 10f;
     [Range(0f, 100f)]
     public float maxAcceleration = 10f;
+    public Vector2 playerInput;
 
     private Rigidbody2D rb;
     private Vector2 velocity;
@@ -23,7 +24,7 @@ public class ShipMovement : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        Vector2 playerInput = new Vector2(
+        playerInput = new Vector2(
             Input.GetAxis("Horizontal"),
             Input.GetAxis("Vertical")
         );
