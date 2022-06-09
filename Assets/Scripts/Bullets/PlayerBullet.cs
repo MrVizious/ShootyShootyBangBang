@@ -3,24 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerBullet : MonoBehaviour
+public class PlayerBullet : Poolable
 {
 
     public float speed = 10f;
-    public float lifeTime = 2f;
+    public float initialLifeTime = 2f;
+    private float remainingLifeTime;
     public Vector2 direction = new Vector2(1, 1);
 
     // TODO: Add damage
     //public float damage = 1f;
-
-    [HideInInspector]
-    public UnityEvent onDespawn;
 
 
     private Camera cam;
     private Rigidbody2D rb;
     private Collider2D col;
     private TrailRenderer trail;
+    private SpriteRenderer sprite;
 
     private void OnEnable()
     {
@@ -28,16 +27,11 @@ public class PlayerBullet : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
         trail = GetComponent<TrailRenderer>();
-        col.isTrigger = true;
+        sprite = GetComponent<SpriteRenderer>();
     }
-    private void Start()
-    {
-        //TODO: Delete line when shooting works
-        //Shoot(Vector2.zero, new Vector2(1.5f, 2.3f));
-    }
+
     public void Shoot(Vector2 initialDirection)
     {
-        gameObject.SetActive(true);
         direction = initialDirection.normalized * speed;
         col.isTrigger = true;
     }
@@ -47,21 +41,30 @@ public class PlayerBullet : MonoBehaviour
         Shoot(initialDirection);
     }
 
-    public void Despawn()
+    public override Poolable Spawn()
     {
+        trail.Clear();
+        gameObject.SetActive(true);
+        remainingLifeTime = initialLifeTime;
+        onSpawn.Invoke();
+        return this;
+    }
+    public override Poolable Despawn()
+    {
+        trail.Clear();
         gameObject.SetActive(false);
         onDespawn.Invoke();
-
+        return this;
     }
 
     // Update is called once per frame
     private void Update()
     {
         transform.Translate(direction.normalized * speed * Time.deltaTime);
-        lifeTime -= Time.deltaTime;
-        if (lifeTime <= 0)
+        remainingLifeTime -= Time.deltaTime;
+        if (remainingLifeTime <= 0)
         {
-            Destroy(gameObject);
+            Despawn();
             return;
         }
         Vector2 screenPosition = cam.WorldToScreenPoint(transform.position);
@@ -78,6 +81,7 @@ public class PlayerBullet : MonoBehaviour
             trail.Clear();
         }
         transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+        sprite.color = col.isTrigger ? Color.magenta : Color.white;
     }
 
     private void OnCollisionEnter2D(Collision2D other)

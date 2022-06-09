@@ -1,19 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 using DebugExtension;
 
 public class ShipCannon : MonoBehaviour
 {
-    public GameObject bulletPrefab;
-    // Update is called once per frame
+    public Pool bulletPool;
+
+
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
-            PlayerBullet bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity)
-                                  .GetComponent<PlayerBullet>();
-            bullet.Shoot(transform.up);
+            PlayerBullet bullet = (PlayerBullet)bulletPool.Spawn();
+            bullet.Shoot(transform.position, transform.up);
         }
     }
 }

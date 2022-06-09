@@ -120,9 +120,9 @@ public class ShipRocketsAnimation : MonoBehaviour
             }
         }
         //Debug.Log("Forward: " + forwardStrength);
-        DebugExtension.DrawArrow.ForDebug(transform.position, transform.up, Color.red);
-        DebugExtension.DrawArrow.ForDebug(transform.position, shipMovement.playerInput, Color.green);
-        DebugExtension.DrawArrow.ForDebug(transform.position, ((Vector2)transform.up + shipMovement.playerInput).normalized * forwardStrength, Color.blue);
+        //DebugExtension.DrawArrow.ForDebug(transform.position, transform.up, Color.red);
+        //DebugExtension.DrawArrow.ForDebug(transform.position, shipMovement.playerInput, Color.green);
+        //DebugExtension.DrawArrow.ForDebug(transform.position, ((Vector2)transform.up + shipMovement.playerInput).normalized * forwardStrength, Color.blue);
     }
 
     public void StartRockets()
