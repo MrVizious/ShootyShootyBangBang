@@ -20453,8 +20453,8 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &1665180091
-CircleCollider2D:
+--- !u!70 &1665180091
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -20466,9 +20466,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.000000077782175, y: -0.10439748}
-  serializedVersion: 2
-  m_Radius: 0.42808217
+  m_Offset: {x: 7.7371166e-16, y: -0.069094546}
+  m_Size: {x: 0.76500195, y: 0.9294625}
+  m_Direction: 0
 --- !u!1 &1700925658
 GameObject:
   m_ObjectHideFlags: 0
@@ -25454,7 +25454,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1767249600
 Transform:
   m_ObjectHideFlags: 0
@@ -25699,6 +25699,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPool: {fileID: 1641621865}
+  shipMovement: {fileID: 1665180088}
 --- !u!1 &1943556007
 GameObject:
   m_ObjectHideFlags: 0

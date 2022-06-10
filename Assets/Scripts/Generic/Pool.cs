@@ -46,7 +46,6 @@ public class Pool : MonoBehaviour
                 GameObject currentGO = pool[i];
                 if (!currentGO.activeInHierarchy)
                 {
-                    currentGO.SetActive(true);
                     Poolable currentPoolable = currentGO.GetComponent<Poolable>();
                     currentPoolable.onDespawn.AddListener(delegate
                     {

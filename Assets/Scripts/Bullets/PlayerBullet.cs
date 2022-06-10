@@ -67,9 +67,17 @@ public class PlayerBullet : Poolable
             Despawn();
             return;
         }
+        WrapAroundBorders();
+    }
+
+    private void WrapAroundBorders()
+    {
+        if (cam == null)
+        {
+            cam = Camera.main;
+        }
         Vector2 screenPosition = cam.WorldToScreenPoint(transform.position);
         // Teleport to the other side of the screen if the object is outside
-
         if (screenPosition.x > Screen.width || screenPosition.x < 0)
         {
             transform.position = cam.ScreenToWorldPoint(new Vector2(screenPosition.x > Screen.width ? 0 : Screen.width, screenPosition.y));
@@ -81,7 +89,6 @@ public class PlayerBullet : Poolable
             trail.Clear();
         }
         transform.position = new Vector3(transform.position.x, transform.position.y, 0);
-        sprite.color = col.isTrigger ? Color.magenta : Color.white;
     }
 
     private void OnCollisionEnter2D(Collision2D other)

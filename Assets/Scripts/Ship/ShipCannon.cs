@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
+using UnityEngine.Events;
+using CustomEvents;
 using DebugExtension;
 
 public class ShipCannon : MonoBehaviour
 {
     public Pool bulletPool;
+
+    public ShipMovement shipMovement;
 
 
 
@@ -16,6 +19,7 @@ public class ShipCannon : MonoBehaviour
         {
             PlayerBullet bullet = (PlayerBullet)bulletPool.Spawn();
             bullet.Shoot(transform.position, transform.up);
+            shipMovement.Push(-transform.up * 20);
         }
     }
 }
