@@ -11,8 +11,7 @@ public class PlayerBullet : Poolable
     private float remainingLifeTime;
     public Vector2 direction = new Vector2(1, 1);
 
-    // TODO: Add damage
-    //public float damage = 1f;
+    public int damage = 1;
 
 
     private Camera cam;
@@ -30,15 +29,16 @@ public class PlayerBullet : Poolable
         sprite = GetComponent<SpriteRenderer>();
     }
 
-    public void Shoot(Vector2 initialDirection)
+    public void Shoot(Vector2 initialDirection, int newDamage = 1)
     {
         direction = initialDirection.normalized * speed;
         col.isTrigger = true;
+        damage = newDamage;
     }
-    public void Shoot(Vector2 initialPosition, Vector2 initialDirection)
+    public void Shoot(Vector2 initialPosition, Vector2 initialDirection, int newDamage = 1)
     {
         transform.position = initialPosition;
-        Shoot(initialDirection);
+        Shoot(initialDirection, newDamage);
     }
 
     public override Poolable Spawn()
@@ -96,6 +96,7 @@ public class PlayerBullet : Poolable
         if (other.gameObject.tag.Equals("Player"))
         {
             other.gameObject.GetComponent<ShipMovement>().Push(direction * 20);
+            other.gameObject.GetComponentInChildren<ShipCannon>()?.AddDamage(damage);
             Despawn();
         }
     }

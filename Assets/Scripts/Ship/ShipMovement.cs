@@ -33,7 +33,7 @@ public class ShipMovement : MonoBehaviour
         playerInput = Vector2.ClampMagnitude(playerInput, 1);
         rb.AddForce(playerInput * maxAcceleration);
         rb.velocity = Vector2.ClampMagnitude(rb.velocity, maxSpeed);
-        KeepInCamera();
+        //KeepInCamera();
     }
 
     public void Push(Vector2 force)
