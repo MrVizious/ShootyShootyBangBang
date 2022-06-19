@@ -12,6 +12,8 @@ public class ShipCannon : MonoBehaviour
     public ShipMovement shipMovement;
 
     public int maxNumberOfBullets = 5;
+    public int initialBulletDamage = 1;
+
     [SerializeField]
     private List<int> bulletDamages = new List<int>();
 
@@ -22,7 +24,7 @@ public class ShipCannon : MonoBehaviour
         {
             for (int i = 0; i < maxNumberOfBullets; i++)
             {
-                bulletDamages.Add(1);
+                LoadNewBullet();
             }
         }
     }
@@ -41,7 +43,7 @@ public class ShipCannon : MonoBehaviour
         PlayerBullet bullet = (PlayerBullet)bulletPool.Spawn();
         bullet.Shoot(transform.position, transform.up, bulletDamages[0]);
         bulletDamages.RemoveAt(0);
-        bulletDamages.Add(1);
+        LoadNewBullet();
         shipMovement.Push(-transform.up * 20);
     }
 
@@ -50,6 +52,14 @@ public class ShipCannon : MonoBehaviour
         for (int i = 0; i < bulletDamages.Count; i++)
         {
             bulletDamages[i] += damageToAdd;
+        }
+    }
+
+    public void LoadNewBullet()
+    {
+        if (bulletDamages.Count < maxNumberOfBullets)
+        {
+            bulletDamages.Add(1);
         }
     }
 }

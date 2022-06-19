@@ -2,16 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Extensions;
 
 public class PlayerBullet : Poolable
 {
 
-    public float speed = 10f;
-    public float initialLifeTime = 2f;
+    public Gradient colorGradient;
+    private float speed = 10f;
+    private float initialLifeTime = 2f;
     private float remainingLifeTime;
-    public Vector2 direction = new Vector2(1, 1);
+    private Vector2 direction = new Vector2(1, 1);
 
-    public int damage = 1;
+    [SerializeField]
+    private int damage = 1;
 
 
     private Camera cam;
@@ -34,6 +37,18 @@ public class PlayerBullet : Poolable
         direction = initialDirection.normalized * speed;
         col.isTrigger = true;
         damage = newDamage;
+
+        float damagePercentage = Extensions.Extensions.Map(damage, 0, 100000, 0f, 1f);
+        damagePercentage = Mathf.Pow(damagePercentage, 0.2f);
+        Debug.Log(damagePercentage);
+        Color newColor = colorGradient.Evaluate(damagePercentage);
+
+        transform.localScale = new Vector3(2, 2, 2) * damagePercentage;
+        sprite.color = newColor;
+        trail.startColor = newColor;
+        trail.endColor = newColor;
+
+
     }
     public void Shoot(Vector2 initialPosition, Vector2 initialDirection, int newDamage = 1)
     {
