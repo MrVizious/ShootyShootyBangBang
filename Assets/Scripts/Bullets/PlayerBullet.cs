@@ -7,7 +7,7 @@ using Extensions;
 public class PlayerBullet : Poolable
 {
 
-    public bool damageCarriesOver = false;
+    public bool overkillDamageCarriesOver = false;
     public Gradient colorGradient;
     private float speed = 10f;
     private float initialLifeTime = 2f;
@@ -63,10 +63,10 @@ public class PlayerBullet : Poolable
 
 
     }
-    public void Shoot(Vector2 initialPosition, Vector2 initialDirection, int newDamage = 1)
+    public void Shoot(Vector2 initialPosition, Vector2 initialDirection, int newDamage = 1, bool shotFromShip = true)
     {
         transform.position = initialPosition;
-        Shoot(initialDirection, newDamage);
+        Shoot(initialDirection, newDamage, shotFromShip);
     }
 
     public override Poolable Spawn()
@@ -122,7 +122,7 @@ public class PlayerBullet : Poolable
     private void HitEnemy(Enemy enemy)
     {
         int overkillDamage = enemy.Damage(damage);
-        if (damageCarriesOver && overkillDamage > 0)
+        if (overkillDamageCarriesOver && overkillDamage > 0)
         {
             Shoot(direction, overkillDamage, false);
         }
