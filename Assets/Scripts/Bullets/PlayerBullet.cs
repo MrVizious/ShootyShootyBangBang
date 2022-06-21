@@ -7,6 +7,7 @@ using Extensions;
 public class PlayerBullet : Poolable
 {
 
+    public bool damageCarriesOver = false;
     public Gradient colorGradient;
     private float speed = 10f;
     private float initialLifeTime = 2f;
@@ -32,10 +33,13 @@ public class PlayerBullet : Poolable
         sprite = GetComponent<SpriteRenderer>();
     }
 
-    public void Shoot(Vector2 initialDirection, int newDamage = 1)
+    public void Shoot(Vector2 initialDirection, int newDamage = 1, bool shotFromShip = true)
     {
         direction = initialDirection.normalized * speed;
-        col.isTrigger = true;
+        if (shotFromShip)
+        {
+            col.isTrigger = true;
+        }
         damage = newDamage;
 
         float damagePercentage = Extensions.Extensions.Map(damage, 0, 100000, 0f, 1f);
@@ -115,6 +119,19 @@ public class PlayerBullet : Poolable
         transform.position = new Vector3(transform.position.x, transform.position.y, 0);
     }
 
+    private void HitEnemy(Enemy enemy)
+    {
+        int overkillDamage = enemy.Damage(damage);
+        if (damageCarriesOver && overkillDamage > 0)
+        {
+            Shoot(direction, overkillDamage, false);
+        }
+        else
+        {
+            Despawn();
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.tag.Equals("Player"))
@@ -122,6 +139,20 @@ public class PlayerBullet : Poolable
             other.gameObject.GetComponent<ShipMovement>().Push(direction * 20);
             other.gameObject.GetComponentInChildren<ShipCannon>()?.AddDamage(damage);
             Despawn();
+        }
+        else if (other.gameObject.tag.Equals("Enemy"))
+        {
+            Enemy enemy = other.gameObject.GetComponent<Enemy>();
+            HitEnemy(enemy);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag.Equals("Enemy"))
+        {
+            Enemy enemy = other.gameObject.GetComponent<Enemy>();
+            HitEnemy(enemy);
         }
     }
 

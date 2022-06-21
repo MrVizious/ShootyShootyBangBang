@@ -26,7 +26,6 @@ public class ShipCannon : SerializedMonoBehaviour
         {
             value = Mathf.Clamp(value, 0, maxNumberOfBullets);
             int bulletsToAdd = value - currentNumberOfBullets;
-            Debug.Log("Setting currentNumberOfBullets to " + value + " and adding " + bulletsToAdd + " bullets to the former " + currentNumberOfBullets);
             _currentNumberOfBullets = value;
             LoadBullet(bulletsToAdd);
         }
